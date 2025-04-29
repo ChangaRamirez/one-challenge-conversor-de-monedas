@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,70 +18,85 @@ public class Conversor {
             .create();
 
     private boolean estaEjecutando = true;
+    private boolean esValido = false;
 
     private String origen;
     private String destino;
 
-    public void convertir(int opcion) {
-        switch(opcion) {
+    public void convertir(int opcionMonedas, double cantidad) {
+        switch(opcionMonedas) {
             case 1:
                 origen = "USD";
                 destino = "MXN";
+                esValido = true;
                 break;
             case 2:
                 origen = "MXN";
                 destino = "USD";
+                esValido = true;
                 break;
             case 3:
                 origen = "USD";
                 destino = "ARS";
+                esValido = true;
                 break;
             case 4:
                 origen = "ARS";
                 destino = "USD";
+                esValido = true;
                 break;
             case 5:
                 origen = "USD";
                 destino = "BRL";
+                esValido = true;
                 break;
             case 6:
                 origen = "BRL";
                 destino = "USD";
+                esValido = true;
                 break;
             case 7:
                 origen = "USD";
                 destino = "COP";
+                esValido = true;
                 break;
             case 8:
                 origen = "COP";
                 destino = "USD";
+                esValido = true;
                 break;
-            case 9:
-                System.out.println("Gracias por usar nuestros servicios. Vuelva pronto.");
-                estaEjecutando = false;
-                break;
-            default:
-                System.out.println("Seleccione opcion valida");
         }
 
-        String direccion = "https://v6.exchangerate-api.com/v6/1969f4de54b3d48ac80f6ac3/pair/"+ origen +"/" + destino;
+        if (esValido) {
+            String direccion = "https://v6.exchangerate-api.com/v6/1969f4de54b3d48ac80f6ac3/pair/"+ origen +"/" + destino;
 
-        try {
-            HttpClient client = java.net.http.HttpClient.newHttpClient();
+            try {
+                HttpClient client = java.net.http.HttpClient.newHttpClient();
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(direccion))
-                    .build();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(direccion))
+                        .build();
 
-            HttpResponse<String> response = client
-                    .send(request, HttpResponse.BodyHandlers.ofString());
+                HttpResponse<String> response = client
+                        .send(request, HttpResponse.BodyHandlers.ofString());
 
-            String json = response.body();
-            System.out.println(json);
+                String json = response.body();
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+                TasaDeConversion miTasa = gson.fromJson(json, TasaDeConversion.class);
+                double conversion = cantidad * miTasa.conversionRate();
+                BigDecimal resultado = BigDecimal.valueOf(conversion).setScale(2, RoundingMode.HALF_UP);
+
+                System.out.println("El valor $" + cantidad + " [" + origen + "] corresponde al valor final de >>> $" + resultado + " [" + destino + "]");
+                System.out.println("""
+                        
+                        """);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        esValido = false;
     }
 
     public boolean getEstaEjecutando() {
