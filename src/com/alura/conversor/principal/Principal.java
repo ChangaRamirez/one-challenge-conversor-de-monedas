@@ -2,6 +2,7 @@ package com.alura.conversor.principal;
 
 import com.alura.conversor.modelos.Conversor;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Principal {
@@ -14,6 +15,7 @@ public class Principal {
                 *************************************************
                 Bienvenid@ al Conversor de Moneda
                 
+                0) Historial
                 1) Dólar -> Peso mexicano
                 2) Peso mexicano -> Dólar
                 3) Dólar -> Peso argentino
@@ -31,12 +33,19 @@ public class Principal {
             if (opcion == 9) {
                 System.out.println("Gracias por usar nuestros servicios. Vuelva pronto.");
                 break;
-            } else if (opcion < 1 || opcion > 9) {
+            } else if (opcion == 0) {
+                System.out.println("""
+                        Historial de conversiones:
+                        """);
+                System.out.println(conversor.getHistorial());
+                continue;
+            } else if (opcion < 0 || opcion > 9) {
                 System.out.println("""
                         Por favor seleccione una opción valida
                         """);
                 continue;
             }
+
 
             System.out.println("Ingrese el valor que desea convertir:");
             double cantidad = teclado.nextDouble();

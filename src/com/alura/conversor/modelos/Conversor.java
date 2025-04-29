@@ -10,12 +10,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Conversor {
     Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
             .setPrettyPrinting()
             .create();
+
+    HistorialDeConversiones historial = new HistorialDeConversiones();
+
+    public HistorialDeConversiones getHistorial() {
+        return historial;
+    }
 
     private boolean estaEjecutando = true;
     private boolean esValido = false;
@@ -90,6 +98,11 @@ public class Conversor {
                 System.out.println("""
                         
                         """);
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatoBonito = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+                historial.agregaEntrada(origen, destino, cantidad, resultado, ahora.format(formatoBonito));
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
