@@ -2,7 +2,6 @@ package com.alura.conversor.principal;
 
 import com.alura.conversor.modelos.Conversor;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Principal {
