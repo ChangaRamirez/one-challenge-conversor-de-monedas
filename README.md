@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ChangaRamirez/one-challenge-amigo-secreto">
-    <img src="https://github.com/ChangaRamirez/one-challenge-amigo-secreto/blob/main/assets/images/amigo-secreto-logo.JPG" alt="Logo" width="300" height="120">
+    <img src="https://github.com/ChangaRamirez/one-challenge-conversor-de-monedas/blob/main/assets/images/conversor-logo.png" alt="Logo" width="400">
   </a>
 
 <h3 align="center">Conversor de Monedas</h3>
@@ -84,7 +84,7 @@
 <!-- ABOUT THE PROJECT -->
 ## Acerca Del Proyecto
 
-<img src="assets/images/amigo-secreto.png" alt="Logo" width="500">
+<img src="https://github.com/ChangaRamirez/one-challenge-conversor-de-monedas/blob/main/assets/images/conversor-banner.jpg" alt="Logo" width="500">
 
 <!--Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `ChangaRamirez`, `one-challenge-amigo-secreto`, `twitter_handle`, `linkedin_username`, `hotmail`, `laloraco`, `project_title`, `project_description`, `project_license`-->
 
