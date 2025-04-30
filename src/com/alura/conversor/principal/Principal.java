@@ -9,7 +9,7 @@ public class Principal {
         Scanner teclado = new Scanner(System.in);
         Conversor conversor = new Conversor();
 
-        while (conversor.getEstaEjecutando()) {
+        while (true) {
             System.out.println("""
                 *************************************************
                 Bienvenid@ al Conversor de Moneda

@@ -25,9 +25,6 @@ public class Conversor {
         return historial;
     }
 
-    private boolean estaEjecutando = true;
-    private boolean esValido = false;
-
     private String origen;
     private String destino;
 
@@ -36,83 +33,67 @@ public class Conversor {
             case 1:
                 origen = "USD";
                 destino = "MXN";
-                esValido = true;
                 break;
             case 2:
                 origen = "MXN";
                 destino = "USD";
-                esValido = true;
                 break;
             case 3:
                 origen = "USD";
                 destino = "ARS";
-                esValido = true;
                 break;
             case 4:
                 origen = "ARS";
                 destino = "USD";
-                esValido = true;
                 break;
             case 5:
                 origen = "USD";
                 destino = "BRL";
-                esValido = true;
                 break;
             case 6:
                 origen = "BRL";
                 destino = "USD";
-                esValido = true;
                 break;
             case 7:
                 origen = "USD";
                 destino = "COP";
-                esValido = true;
                 break;
             case 8:
                 origen = "COP";
                 destino = "USD";
-                esValido = true;
                 break;
         }
 
-        if (esValido) {
-            String direccion = "https://v6.exchangerate-api.com/v6/1969f4de54b3d48ac80f6ac3/pair/"+ origen +"/" + destino;
+        String direccion = "https://v6.exchangerate-api.com/v6/1969f4de54b3d48ac80f6ac3/pair/"+ origen +"/" + destino;
 
-            try {
-                HttpClient client = java.net.http.HttpClient.newHttpClient();
+        try {
+            HttpClient client = java.net.http.HttpClient.newHttpClient();
 
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(direccion))
-                        .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(direccion))
+                    .build();
 
-                HttpResponse<String> response = client
-                        .send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
-                String json = response.body();
+            String json = response.body();
 
-                TasaDeConversion miTasa = gson.fromJson(json, TasaDeConversion.class);
-                double conversion = cantidad * miTasa.conversionRate();
-                BigDecimal resultado = BigDecimal.valueOf(conversion).setScale(2, RoundingMode.HALF_UP);
+            TasaDeConversion miTasa = gson.fromJson(json, TasaDeConversion.class);
+            double conversion = cantidad * miTasa.conversionRate();
+            BigDecimal resultado = BigDecimal.valueOf(conversion).setScale(2, RoundingMode.HALF_UP);
 
-                System.out.println("El valor $" + cantidad + " [" + origen + "] corresponde al valor final de >>> $" + resultado + " [" + destino + "]");
-                System.out.println("""
+            System.out.println("El valor $" + cantidad + " [" + origen + "] corresponde al valor final de >>> $" + resultado + " [" + destino + "]");
+            System.out.println("""
                         
                         """);
 
-                LocalDateTime ahora = LocalDateTime.now();
-                DateTimeFormatter formatoBonito = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatoBonito = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-                historial.agregaEntrada(origen, destino, cantidad, resultado, ahora.format(formatoBonito));
+            historial.agregaEntrada(origen, destino, cantidad, resultado, ahora.format(formatoBonito));
 
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        esValido = false;
-    }
-
-    public boolean getEstaEjecutando() {
-        return estaEjecutando;
     }
 }
